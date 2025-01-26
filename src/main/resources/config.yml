@@ -1,0 +1,134 @@
+globalEnabled: true
+
+# Общее время между циклами показа эффектов (в тиках).
+# 20 тиков = 1 секунда. (Рекомендуется не меньше 5-10 тиков)
+generalSettings:
+  updateIntervalTicks: 3
+
+messages:
+  menuTitle: "&a✦ &fМеню эффектов &a✦"
+  effectSelected: "&a➜ &fВы выбрали эффект: &a"
+  commonRarity: "&aОбычная"
+  accessibleDefault: "&a✔ &fДоступно"
+  notAccessibleDefault: "&с✖ &fНедоступно"
+  noEffectSelected: "&cСначала выберите эффект!"
+  startEffectMessage: "&aЗапускаем %effect% с механикой: %mechanic%"
+  unrecognizedItem: "&cНевозможно распознать выбранный предмет!"
+  effectNotConfigured: "&cЭтот эффект не настроен в config.yml."
+  effectNotFoundLog: "&cЭффект %effect-type% не найден в config.yml!"
+  unknownMechanicLog: "&cНеизвестная механика: %mechanic%"
+
+names:
+  STAR_TRAIL: "&fЗвёздный &aслед"
+  FLAME_RING: "&fОгненное &aкольцо"
+  RAINBOW_CLOUD: "&fРадужное &aоблако"
+  HEART_PATH: "&fТропинка &aсердец"
+  MAGIC_SPIRAL: "&fВолшебная &aспираль"
+  BUBBLE_BURST: "&fМыльные &aпузыри"
+  GREEN_SPARK: "&aЗелёная &fискра"
+  SNOWFLAKE_TRAIL: "&fСнежный &aшлейф"
+  ELECTRIC_ZAP: "&fЭлектрический &aразряд"
+  ASH_AURA: "&fПепельная &aаура"
+  SPIRAL_STEPS: "&fСпиральные &aшаги"
+  EMBER_PULSE: "&fТлеющий &aимпульс"
+  BLOOM_TRAIL: "&fЦветочный &aшлейф"
+  PHOENIX_FLARE: "&fОгненный &aвзрыв феникса"
+
+effects:
+  STAR_TRAIL:
+    radius: 0.5
+    count: 5
+    rarity: "&aОбычная"
+    slot: 10
+    material: STAR_ITEM
+
+  FLAME_RING:
+    radius: 0.5
+    count: 5
+    rarity: "&aОбычная"
+    slot: 11
+    material: FLAME_ITEM
+
+  RAINBOW_CLOUD:
+    radius: 1.0
+    count: 10
+    rarity: "&aРедкая"
+    slot: 12
+    material: RAINBOW_ITEM
+
+  HEART_PATH:
+    radius: 0.3
+    count: 3
+    rarity: "&aРедкая"
+    slot: 13
+    material: HEART_ITEM
+
+  MAGIC_SPIRAL:
+    radius: 0.5
+    count: 8
+    rarity: "&aЛегендарная"
+    slot: 14
+    material: MAGIC_ITEM
+
+  BUBBLE_BURST:
+    radius: 0.5
+    count: 5
+    rarity: "&aЛегендарная"
+    slot: 15
+    material: BUBBLE_ITEM
+
+  GREEN_SPARK:
+    radius: 0.2
+    count: 5
+    rarity: "&aМифическая"
+    slot: 16
+    material: GREEN_SPARK_ITEM
+
+  SNOWFLAKE_TRAIL:
+    radius: 0.1
+    count: 10
+    rarity: "&aМифическая"
+    slot: 19
+    material: SNOWFLAKE_ITEM
+
+  ELECTRIC_ZAP:
+    radius: 0.4
+    count: 5
+    rarity: "&aМифическая"
+    slot: 20
+    material: ELECTRIC_ITEM
+
+  ASH_AURA:
+    radius: 0.3
+    count: 5
+    rarity: "&aМифическая"
+    slot: 21
+    material: ASH_ITEM
+
+  SPIRAL_STEPS:
+    radius: 0.5
+    count: 10
+    rarity: "&aОбычная"
+    slot: 22
+    material: SPIRAL_STEPS_ITEM
+
+  EMBER_PULSE:
+    radius: 0.3
+    count: 8
+    rarity: "&aРедкая"
+    slot: 23
+    material: EMBER_ITEM
+
+  BLOOM_TRAIL:
+    radius: 0.6
+    count: 5
+    rarity: "&aОбычная"
+    slot: 24
+    material: BLOOM_ITEM
+
+  PHOENIX_FLARE:
+    radius: 0.5
+    count: 5
+    rarity: "&aЛегендарная"
+    slot: 25
+    material: PHOENIX_ITEM
