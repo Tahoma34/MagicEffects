@@ -64,7 +64,7 @@ public enum ParticleEffectType {
     SNOWFLAKE_TRAIL(
             "SNOWFLAKE_TRAIL",
             "Snowflake Trail",
-            new Particle[]{Particle.SNOW_SHOVEL},
+            new Particle[]{Particle.SNOWBALL},
             "magiceffects.particle.snowflaketrail",
             Material.SNOWBALL
     ),
@@ -92,7 +92,7 @@ public enum ParticleEffectType {
     EMBER_PULSE(
             "EMBER_PULSE",
             "Ember Pulse",
-            new Particle[]{Particle.LAVA, Particle.REDSTONE},
+            new Particle[]{Particle.SOUL, Particle.REDSTONE},
             new DustOptions[]{
                     null,
                     new DustOptions(Color.ORANGE, 1.0F)

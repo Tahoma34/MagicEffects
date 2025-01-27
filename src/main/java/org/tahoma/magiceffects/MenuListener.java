@@ -17,22 +17,38 @@ import java.util.*;
 public class MenuListener implements Listener {
 
     public enum MechanicType {
-        CIRCLE_FEET("Круг у ног"),
-        WAVE_UP("Волна вверх"),
-        CONE_UP("Конус вверх"),
-        ROTATING_BEAM("Вращающийся луч"),
-        TRAIL_BEHIND("Шлейф позади"),
-        ARC("Дуга"),
-        NIMB("Нимб");
+        CIRCLE_FEET("circle_feet"),
+        WAVE_UP("wave_up"),
+        CONE_UP("cone_up"),
+        ROTATING_BEAM("rotating_beam"),
+        TRAIL_BEHIND("trail_behind"),
+        ARC("arc"),
+        NIMB("nimb");
 
-        private final String displayName;
+        private final String configKey;
 
-        MechanicType(String name) {
-            this.displayName = name;
+        MechanicType(String configKey) {
+            this.configKey = configKey;
+        }
+
+        public String getConfigKey() {
+            return configKey;
         }
 
         public String getDisplayName() {
-            return displayName;
+            String configName = MagicEffects.getInstance()
+                    .getConfig()
+                    .getString("mechanics." + configKey, configKey); // Получаем имя из конфигурации
+            return ChatColor.translateAlternateColorCodes('&', configName); // Поддержка цвета
+        }
+
+        public static MechanicType fromString(String name) {
+            for (MechanicType mechanic : MechanicType.values()) {
+                if (mechanic.getDisplayName().equalsIgnoreCase(name)) {
+                    return mechanic;
+                }
+            }
+            return null;
         }
     }
 
@@ -40,26 +56,11 @@ public class MenuListener implements Listener {
     private static final Map<UUID, MechanicType> selectedMechanics = new HashMap<>();
 
     public static void openEffectsMenu(Player player) {
-        // Титул меню
         String rawTitle = MagicEffects.getInstance().getConfig().getString("messages.menuTitle", "&5Меню эффектов");
         String menuTitle = ChatColor.translateAlternateColorCodes('&', rawTitle);
         Inventory menu = Bukkit.createInventory(null, 54, menuTitle);
 
-        // Базовые строки из конфига, переводим & в игровые цвета
-        String commonRarity = ChatColor.translateAlternateColorCodes(
-                '&',
-                MagicEffects.getInstance().getConfig().getString("messages.commonRarity", "Обычная")
-        );
-        String accessibleDefault = ChatColor.translateAlternateColorCodes(
-                '&',
-                MagicEffects.getInstance().getConfig().getString("messages.accessibleDefault", "Доступно")
-        );
-        String notAccessibleDefault = ChatColor.translateAlternateColorCodes(
-                '&',
-                MagicEffects.getInstance().getConfig().getString("messages.notAccessibleDefault", "Недоступно")
-        );
-
-        // Получаем все эффекты, для которых есть конфигурация
+        // Добавление эффектов в меню
         ParticleEffectType[] effects = ParticleEffectType.values();
         int fallbackSlot = 10;
 
@@ -69,11 +70,9 @@ public class MenuListener implements Listener {
                     .getConfigurationSection("effects." + effect.getConfigKey());
 
             if (effectSection == null) {
-                // Если у эффекта нет секции в config.yml, пропускаем
                 continue;
             }
 
-            // Берём материал из конфига, при ошибке - используем дефолт
             String configuredMaterial = effectSection.getString("material");
             Material finalMaterial;
             try {
@@ -84,33 +83,29 @@ public class MenuListener implements Listener {
                 finalMaterial = effect.getMaterial();
             }
 
-            // Слот по умолчанию, если не указано корректное значение
             int slot = effectSection.getInt("slot", fallbackSlot);
             if (slot < 0 || slot >= 54) {
                 slot = fallbackSlot;
             }
 
-            // Создаём предмет-иконку эффекта
             ItemStack item = new ItemStack(finalMaterial);
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
-                // Редкость
-                String rarityRaw = effectSection.getString("rarity", commonRarity);
+                String rarityRaw = effectSection.getString("rarity", "Обычная");
                 String rarityColored = ChatColor.translateAlternateColorCodes('&', rarityRaw);
 
-                // Доступность
                 boolean hasPerm = player.hasPermission(effect.getPermissionNode());
-                String availabilityRaw = hasPerm ? accessibleDefault : notAccessibleDefault;
+                String availabilityRaw = hasPerm ? "&aДоступно" : "&cНедоступно";
                 String availabilityColored = ChatColor.translateAlternateColorCodes('&', availabilityRaw);
 
-                // Название эффекта (может включать цвета)
                 String effectNameColored = ChatColor.translateAlternateColorCodes('&', effect.getDisplayName());
 
-                // Устанавливаем имя и описание
                 meta.setDisplayName(effectNameColored);
                 meta.setLore(Arrays.asList(
+                        ChatColor.GRAY + " ",
                         ChatColor.GRAY + "Редкость: " + rarityColored,
-                        ChatColor.GRAY + "Доступность: " + availabilityColored
+                        ChatColor.GRAY + "Права: " + availabilityColored,
+                        ChatColor.GRAY + " "
                 ));
                 item.setItemMeta(meta);
             }
@@ -119,7 +114,7 @@ public class MenuListener implements Listener {
             fallbackSlot++;
         }
 
-        // Выпадающий список механик
+        // Добавление механик в меню
         MechanicType[] mechanics = MechanicType.values();
         int[] mechanicSlots = {37, 38, 39, 40, 41, 42, 43};
         for (int i = 0; i < mechanicSlots.length && i < mechanics.length; i++) {
@@ -127,13 +122,11 @@ public class MenuListener implements Listener {
             ItemStack item = new ItemStack(Material.PAPER);
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
-                // Имя механики
-                String mechanicName = ChatColor.translateAlternateColorCodes('&', mech.getDisplayName());
+                // Используем getDisplayName для получения названия из конфига
+                String mechanicName = mech.getDisplayName();
 
-                meta.setDisplayName(ChatColor.AQUA + mechanicName);
-                meta.setLore(Collections.singletonList(
-                        ChatColor.GRAY + "Запуск механики: " + mechanicName
-                ));
+                meta.setDisplayName(mechanicName);
+                meta.setLore(Collections.singletonList(ChatColor.GRAY + " "));
                 item.setItemMeta(meta);
             }
             menu.setItem(mechanicSlots[i], item);
@@ -144,7 +137,6 @@ public class MenuListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        // Сравниваем заголовки
         String rawTitle = MagicEffects.getInstance().getConfig().getString("messages.menuTitle", "&5Меню эффектов");
         String configTitleStripped = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', rawTitle));
         String currentTitleStripped = ChatColor.stripColor(event.getView().getTitle());
@@ -165,7 +157,6 @@ public class MenuListener implements Listener {
 
         String name = ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
 
-        // Проверка на выбранный эффект
         for (ParticleEffectType effect : ParticleEffectType.values()) {
             if (name.equals(ChatColor.stripColor(effect.getDisplayName()))) {
                 String effectSelectedRaw = MagicEffects.getInstance().getConfig().getString(
@@ -177,16 +168,14 @@ public class MenuListener implements Listener {
                 player.sendMessage(effectSelected + ChatColor.translateAlternateColorCodes('&', effect.getDisplayName()));
                 selectedEffects.put(player.getUniqueId(), effect);
 
-                // Если механика уже выбрана, запускаем сразу
                 MechanicType savedMechanic = selectedMechanics.get(player.getUniqueId());
                 if (savedMechanic != null) {
-                    ParticleManager.startEffectIndefinitely(player, effect, savedMechanic.getDisplayName());
+                    ParticleManager.startEffectIndefinitely(player, effect, savedMechanic);
                 }
                 return;
             }
         }
 
-        // Проверка на выбранную механику
         for (MechanicType mechanic : MechanicType.values()) {
             if (name.equals(ChatColor.stripColor(mechanic.getDisplayName()))) {
                 selectedMechanics.put(player.getUniqueId(), mechanic);
@@ -206,16 +195,15 @@ public class MenuListener implements Listener {
                     );
                     String startEffectMessage = ChatColor.translateAlternateColorCodes('&', startEffectMessageRaw)
                             .replace("%effect%", ChatColor.translateAlternateColorCodes('&', chosenEffect.getDisplayName()))
-                            .replace("%mechanic%", ChatColor.translateAlternateColorCodes('&', mechanic.getDisplayName()));
+                            .replace("%mechanic%", mechanic.getDisplayName()); // Используем getDisplayName для отображения имени из конфига
 
                     player.sendMessage(startEffectMessage);
-                    ParticleManager.startEffectIndefinitely(player, chosenEffect, mechanic.getDisplayName());
+                    ParticleManager.startEffectIndefinitely(player, chosenEffect, mechanic);
                 }
                 return;
             }
         }
 
-        // Если пункт не распознан
         String unrecognizedItemRaw = MagicEffects.getInstance().getConfig().getString(
                 "messages.unrecognizedItem",
                 "&cНевозможно распознать выбранный предмет!"

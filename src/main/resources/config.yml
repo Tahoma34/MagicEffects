@@ -18,6 +18,15 @@ messages:
   effectNotFoundLog: "&cЭффект %effect-type% не найден в config.yml!"
   unknownMechanicLog: "&cНеизвестная механика: %mechanic%"
 
+mechanics:
+  circle_feet: "&aРасширяющийся круг"
+  wave_up: "&bВолна вверх"
+  cone_up: "&cКонус вверх"
+  rotating_beam: "&dВращающийся луч"
+  trail_behind: "&eСлед позади"
+  arc: "&fДуга"
+  nimb: "&6Нимб"
+
 names:
   STAR_TRAIL: "&fЗвёздный &aслед"
   FLAME_RING: "&fОгненное &aкольцо"
@@ -36,11 +45,11 @@ names:
 
 effects:
   STAR_TRAIL:
-    radius: 0.5
-    count: 5
+    radius: 0.5 # Радиус партикла
+    count: 5 # Количество партиклов
     rarity: "&aОбычная"
-    slot: 10
-    material: STAR_ITEM
+    slot: 10 # Слот в меню
+    material: STAR_ITEM # Не трогать, идет бета-тестирование..
 
   FLAME_RING:
     radius: 0.5
