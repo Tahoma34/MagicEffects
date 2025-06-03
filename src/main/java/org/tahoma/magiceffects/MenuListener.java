@@ -38,8 +38,8 @@ public class MenuListener implements Listener {
         public String getDisplayName() {
             String configName = MagicEffects.getInstance()
                     .getConfig()
-                    .getString("mechanics." + configKey, configKey); // Получаем имя из конфигурации
-            return ChatColor.translateAlternateColorCodes('&', configName); // Поддержка цвета
+                    .getString("mechanics." + configKey, configKey); 
+            return ChatColor.translateAlternateColorCodes('&', configName);
         }
 
         public static MechanicType fromString(String name) {
@@ -60,7 +60,6 @@ public class MenuListener implements Listener {
         String menuTitle = ChatColor.translateAlternateColorCodes('&', rawTitle);
         Inventory menu = Bukkit.createInventory(null, 54, menuTitle);
 
-        // Добавление эффектов в меню
         ParticleEffectType[] effects = ParticleEffectType.values();
         int fallbackSlot = 10;
 
@@ -114,7 +113,6 @@ public class MenuListener implements Listener {
             fallbackSlot++;
         }
 
-        // Добавление механик в меню
         MechanicType[] mechanics = MechanicType.values();
         int[] mechanicSlots = {37, 38, 39, 40, 41, 42, 43};
         for (int i = 0; i < mechanicSlots.length && i < mechanics.length; i++) {
@@ -122,7 +120,6 @@ public class MenuListener implements Listener {
             ItemStack item = new ItemStack(Material.PAPER);
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
-                // Используем getDisplayName для получения названия из конфига
                 String mechanicName = mech.getDisplayName();
 
                 meta.setDisplayName(mechanicName);
@@ -195,7 +192,7 @@ public class MenuListener implements Listener {
                     );
                     String startEffectMessage = ChatColor.translateAlternateColorCodes('&', startEffectMessageRaw)
                             .replace("%effect%", ChatColor.translateAlternateColorCodes('&', chosenEffect.getDisplayName()))
-                            .replace("%mechanic%", mechanic.getDisplayName()); // Используем getDisplayName для отображения имени из конфига
+                            .replace("%mechanic%", mechanic.getDisplayName()); 
 
                     player.sendMessage(startEffectMessage);
                     ParticleManager.startEffectIndefinitely(player, chosenEffect, mechanic);
