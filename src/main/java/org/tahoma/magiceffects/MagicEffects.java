@@ -1,4 +1,3 @@
-// MagicEffects.java
 package org.tahoma.magiceffects;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,13 +12,10 @@ public final class MagicEffects extends JavaPlugin {
         instance = this;
         saveDefaultConfig();
 
-        // Регистрируем команды
         getCommand("magiceffects").setExecutor(new CommandManager());
 
-        // Регистрируем слушатель для GUI
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
 
-        // Лог успешного включения
         getLogger().info(ChatColor.GREEN + "MagicEffects плагин включен и готов к использованию!");
     }
 
