@@ -6,10 +6,6 @@ import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.ChatColor;
 
-/**
- * Перечисление доступных эффектов.
- * Названия берутся из конфигурации "names.<EffectName>" или используются fallbackName.
- */
 public enum ParticleEffectType {
 
     STAR_TRAIL(
