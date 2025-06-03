@@ -1,4 +1,3 @@
-// CommandManager.java
 package org.tahoma.magiceffects;
 
 import org.bukkit.ChatColor;
@@ -12,23 +11,19 @@ public class CommandManager implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        // Команду может использовать только игрок
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "Эту команду может использовать только игрок.");
             return true;
         }
         Player player = (Player) sender;
 
-        // Если передали хотя бы один аргумент
         if (args.length == 1) {
 
-            // Подкоманда: /magiceffects menu
             if (args[0].equalsIgnoreCase("menu")) {
                 MenuListener.openEffectsMenu(player);
                 return true;
             }
 
-            // Подкоманда: /magiceffects reload
             if (args[0].equalsIgnoreCase("reload")) {
                 if (!player.hasPermission("magiceffects.reload")) {
                     player.sendMessage(ChatColor.RED + "У вас недостаточно прав для использования этой команды.");
@@ -39,7 +34,6 @@ public class CommandManager implements CommandExecutor {
                 return true;
             }
 
-            // Подкоманда: /magiceffects reset
             if (args[0].equalsIgnoreCase("reset")) {
                 if (!player.hasPermission("magiceffects.reset")) {
                     player.sendMessage(ChatColor.RED + "У вас недостаточно прав для использования этой команды.");
@@ -50,7 +44,6 @@ public class CommandManager implements CommandExecutor {
                 return true;
             }
 
-            // Неизвестная подкоманда
             player.sendMessage(ChatColor.YELLOW + "Неизвестная команда. Используйте: /magiceffects <menu|reload|reset>");
             return true;
         }
